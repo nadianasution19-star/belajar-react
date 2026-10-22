@@ -1,0 +1,66 @@
+NOMOR 2 - Ubah nilai langkah Counter
+Soal:
+Ganti <Counter step={1} /> menjadi step={5}. Apa yang berubah?
+
+Jawaban:
+Yang berubah adalah besar perubahan nilai counter setiap tombol ditekan.
+
+- Sebelumnya (step={1}): tombol "+ Tambah" menambah 1 dan tombol
+  "- Kurang" mengurangi 1 setiap kali diklik.
+- Sesudah (step={5}): tombol "+ Tambah" menambah 5 dan tombol
+  "- Kurang" mengurangi 5 setiap kali diklik.
+
+Contoh: jika nilai counter saat ini 10, maka klik "+ Tambah" menjadi
+15, lalu 20, 25, dan seterusnya. Klik "- Kurang" menjadi 5, lalu 0.
+
+Penjelasan:
+step adalah props yang dikirim dari komponen App ke komponen Counter.
+Di dalam Counter, nilai step dipakai pada fungsi setter, misalnya:
+
+    setCount(count + step)   // tombol Tambah
+    setCount(count - step)   // tombol Kurang
+
+Jadi, cukup dengan mengubah nilai props di App, perilaku Counter ikut
+berubah tanpa perlu mengedit kode di dalam komponen Counter. Ini
+menunjukkan bahwa props membuat komponen fleksibel dan dapat dipakai
+ulang (reusable). Tombol Reset tidak terpengaruh, karena hanya
+mengembalikan nilai ke nilai awal.
+
+NOMOR 4 - Analisis program
+Soal:
+Jelaskan alasan input nama diatur oleh state pada App, sedangkan nilai
+counter disimpan di Counter.
+
+Jawaban:
+
+1. Input nama diatur oleh state di App
+   - Nilai nama dibutuhkan oleh lebih dari satu bagian program. Input
+     yang mengubahnya ada di App, sedangkan yang menampilkannya adalah
+     komponen Hello ("Halo, Budi!").
+   - Di React, data mengalir satu arah, dari komponen induk (parent)
+     ke komponen anak (child) lewat props. Karena Hello adalah anak
+     dari App, state nama harus berada di App agar bisa dikirim ke
+     Hello sebagai props.
+   - Ini disebut "lifting state up" (state diangkat ke induk) dan
+     membuat App menjadi satu-satunya sumber data nama (single source
+     of truth). Setiap kali pengguna mengetik, state berubah, App
+     dirender ulang, dan Hello menerima props baru sehingga tampilannya
+     ikut berubah (sesuai teks "Mengubah state di App akan mengirim
+     props baru ke Hello").
+
+2. Nilai counter disimpan di Counter
+   - Nilai counter hanya dipakai oleh Counter itu sendiri (ditampilkan
+     dan diubah oleh tombol Tambah, Kurang, dan Reset). Komponen lain
+     tidak memerlukannya.
+   - Karena itu state-nya cukup disimpan secara lokal di dalam Counter.
+     Prinsipnya: simpan state sedekat mungkin dengan komponen yang
+     memakainya.
+   - Manfaatnya: Counter menjadi mandiri (encapsulated) dan mudah
+     dipakai ulang. Kode App juga lebih sederhana dan tidak dipenuhi
+     state yang bukan urusannya.
+
+Kesimpulan:
+State diletakkan sesuai kebutuhan berbagi data. Jika data dipakai
+bersama oleh beberapa komponen (nama), state ditaruh di induknya (App)
+dan dibagikan lewat props. Jika data hanya dipakai satu komponen
+(counter), state disimpan di komponen itu sendiri.
